@@ -1,3 +1,8 @@
-{{- $email := promptString "email" -}}
+{{- $email := promptStringOnce . "email" "Email address" -}}
+{{- $tuist_version := promptStringOnce . "tuist_version" "Tuist version (leave empty for latest)" -}}
+{{- $swiftlint_version := promptStringOnce . "swiftlint_version" "SwiftLint version (leave empty for latest)" -}}
+
 [data]
-    email = "{{ $email }}"
+    email = {{ $email | quote }}
+    tuist_version = {{ $tuist_version | quote }}
+    swiftlint_version = {{ $swiftlint_version | quote }}
