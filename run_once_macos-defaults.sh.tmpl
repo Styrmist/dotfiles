@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# macOS Defaults Configuration Script
+# This script sets various macOS defaults for a better user experience
+
+set -euo pipefail
+
+echo "Setting macOS defaults..."
+
+## MacOS Dock
+echo "Configuring Dock..."
+defaults write com.apple.dock "orientation" -string "right"
+defaults write com.apple.dock "tilesize" -int "42"
+defaults write com.apple.dock "autohide" -bool "true"
+defaults write com.apple.dock "show-recents" -bool "false"
+defaults write com.apple.dock "mineffect" -string "scale"
+defaults write com.apple.dock "scroll-to-open" -bool "true"
+killall Dock || true
+
+# Screenshots
+echo "Configuring Screenshots..."
+defaults write com.apple.screencapture "disable-shadow" -bool "true"
+
+# Safari
+echo "Configuring Safari..."
+defaults write com.apple.Safari "ShowFullURLInSmartSearchField" -bool "true"
+killall Safari || true
+
+# Finder
+echo "Configuring Finder..."
+defaults write NSGlobalDomain "AppleShowAllExtensions" -bool "true"
+defaults write com.apple.finder "ShowPathbar" -bool "true"
+defaults write com.apple.finder "_FXSortFoldersFirst" -bool "true"
+defaults write com.apple.finder "FXDefaultSearchScope" -string "SCcf"
+defaults write com.apple.finder "FXEnableExtensionChangeWarning" -bool "false"
+# Show User Library folder
+chflags nohidden ~/Library/
+killall Finder || true
+
+# Desktop
+echo "Configuring Desktop..."
+defaults write com.apple.finder "_FXSortFoldersFirstOnDesktop" -bool "true"
+killall Finder || true
+
+# Mission Control
+echo "Configuring Mission Control..."
+defaults write com.apple.dock "mru-spaces" -bool "false"
+defaults write com.apple.spaces "spans-displays" -bool "true"
+killall SystemUIServer || true
+killall Dock || true
+
+# Feedback Assistant
+echo "Configuring Feedback Assistant..."
+defaults write com.apple.appleseed.FeedbackAssistant "Autogather" -bool "false"
+
+# Xcode
+echo "Configuring Xcode..."
+defaults write com.apple.dt.Xcode "ShowBuildOperationDuration" -bool "true"
+killall Xcode || true
+
+# Simulator
+echo "Configuring Simulator..."
+defaults write com.apple.iphonesimulator "ScreenShotSaveLocation" -string "~/Desktop/Simulator Screenshots"
+
+# Disable application quarantine message
+echo "Disabling application quarantine..."
+defaults write com.apple.LaunchServices "LSQuarantine" -bool "false"
+
+echo "macOS defaults configuration completed!"
+echo "Note: Some changes may require a restart to take full effect." 
