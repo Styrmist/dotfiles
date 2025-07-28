@@ -1,0 +1,139 @@
+## Brew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# specify a directory to install casks
+cask_args appdir: '/Applications'
+
+# Tap repositories
+tap "tuist/tuist" || true
+
+# Packages
+brew "chezmoi"
+brew "git"
+brew "gh"
+brew "git-lfs"
+brew "gnupg"
+brew "pinentry-mac"
+brew "wget"
+brew "python@3.13"
+brew "htop"
+brew "xcodes"
+brew "tuist/tuist/tuist@{{.tuist_version}}" # 4.48.2
+brew "swiftlint@{{.swiftlint_version}}" # 0.53.0
+brew "mas"
+brew "thefuck"
+brew "tlrc"
+
+# Casks
+cask "github-copilot-for-xcode"
+cask "maccy"
+cask "xcodes-app"
+cask "bitwarden"
+cask "cursor"
+cask "firefox"
+cask "fork"
+cask "iterm2"
+cask "telegram"
+cask "zed"
+cask "notion"
+cask "jordanbaird-ice"
+cask "cleanmymac"
+cask "dash"
+
+# Apps
+mas 'Keynote', id: 409183694
+mas 'Numbers', id: 409203825
+mas 'Pages', id: 409201541
+
+
+#RVM
+gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+\curl -sSL https://get.rvm.io | bash
+rvm install 3.3.0
+rvm alias create default 3.3.0
+rvm --default use 3.3.0
+gem install bundler
+
+# Tuist
+brew install --formula tuist
+# brew install --formula tuist@4.48.2
+
+## MacOS
+
+# MacOS dock
+defaults write com.apple.dock "orientation" -string "right"
+defaults write com.apple.dock "tilesize" -int "42"
+defaults write com.apple.dock "autohide" -bool "true"
+defaults write com.apple.dock "show-recents" -bool "false"
+defaults write com.apple.dock "mineffect" -string "scale"
+defaults write com.apple.dock "scroll-to-open" -bool "true"
+killall Dock
+
+# Screenshots
+defaults write com.apple.screencapture "disable-shadow" -bool "true"
+
+# Safari
+defaults write com.apple.Safari "ShowFullURLInSmartSearchField" -bool "true"
+killall Safari
+
+# Finder
+defaults write NSGlobalDomain "AppleShowAllExtensions" -bool "true"
+defaults write com.apple.finder "ShowPathbar" -bool "true"
+defaults write com.apple.finder "_FXSortFoldersFirst" -bool "true"
+defaults write com.apple.finder "FXDefaultSearchScope" -string "SCcf"
+defaults write com.apple.finder "FXEnableExtensionChangeWarning" -bool "false"
+# Show User Library folder
+chflags nohidden ~/Library/
+killall Finder
+
+# Desktop
+defaults write com.apple.finder "_FXSortFoldersFirstOnDesktop" -bool "true"
+killall Finder
+
+# Mission Control
+defaults write com.apple.dock "mru-spaces" -bool "false"
+defaults write com.apple.spaces "spans-displays" -bool "true"
+killall SystemUIServer
+killall Dock
+
+# Feedback Assistant
+defaults write com.apple.appleseed.FeedbackAssistant "Autogather" -bool "false"
+
+# Xcode
+defaults write com.apple.dt.Xcode "ShowBuildOperationDuration" -bool "true"
+killall Xcode
+
+# Simulator
+defaults write com.apple.iphonesimulator "ScreenShotSaveLocation" -string "~/Desktop/Simulator Screenshots"
+
+# Disable application quarantine message
+defaults write com.apple.LaunchServices "LSQuarantine" -bool "false"
+
+## SSH
+ssh-keygen -t ed25519 -C "danylov.k@ajax.systems"
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+ssh-add -l
+pbcopy < ~/.ssh/id_ed25519.pub
+nano ~/.ssh/config
+> Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519
+  UseKeychain yes
+  AddKeysToAgent yes
+
+## Setups
+# Setup gh
+gh auth login
+gh auth setup-git
+
+# Setup xcodes to install xcode + simulators (16.2)
+xcode-select --install
+
+# GPG
+echo "pinentry-program $(which pinentry-mac)" >> ~/.gnupg/gpg-agent.conf
+killall gpg-agent
+gpg --full-generate-key
+#Get id from secret field after "/"
+gpg --list-secret-keys --keyid-format=long
+# gpg --armor --export <ID> | pbcopy
