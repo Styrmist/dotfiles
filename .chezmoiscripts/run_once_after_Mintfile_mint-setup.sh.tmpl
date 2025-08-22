@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Mint Setup Script
+# This script installs Mint and sets up packages from Mintfile
+
+set -euo pipefail
+
+echo "Setting up Mint and installing packages...."
+
+# Check if Mint is already installed
+if command -v mint &> /dev/null; then
+    echo "Mint is already installed."
+else
+    echo "Installing Mint..."
+    # Install Mint using Homebrew
+    brew install mint
+fi
+
+# Check if Mintfile exists in home directory
+MINTFILE_PATH="/Users/$(whoami)/Mintfile"
+if [[ ! -f "$MINTFILE_PATH" ]]; then
+    echo "Mintfile not found at $MINTFILE_PATH"
+    echo "Please ensure the Mintfile template has been applied first."
+    exit 1
+fi
+
+echo "Found Mintfile at $MINTFILE_PATH"
+
+# Install packages from Mintfile
+echo "Installing packages from Mintfile..."
+cd /Users/$(whoami)
+mint bootstrap -l
+
+# Verify installations
+echo "Verifying installations..."
+mint list
+
+echo "Mint package installation completed successfully!"

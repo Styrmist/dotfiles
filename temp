@@ -1,0 +1,36 @@
+
+#RVM
+gpg --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+\curl -sSL https://get.rvm.io | bash -s stable
+rvm install 3.3.0
+rvm alias create default 3.3.0
+rvm --default use 3.3.0
+gem install bundler
+
+## SSH
+ssh-keygen -t ed25519 -C {{.email}}
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+ssh-add -l
+pbcopy < ~/.ssh/id_ed25519.pub
+nano ~/.ssh/config
+> Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519
+  UseKeychain yes
+  AddKeysToAgent yes
+
+## Setups
+# Setup gh
+gh auth login
+
+# Setup xcodes to install xcode + simulators (16.2)
+xcode-select --install
+
+# GPG
+echo "pinentry-program $(which pinentry-mac)" >> ~/.gnupg/gpg-agent.conf
+killall gpg-agent
+gpg --full-generate-key
+#Get id from secret field after "/"
+gpg --list-secret-keys --keyid-format=long
+# gpg --armor --export <ID> | pbcopy

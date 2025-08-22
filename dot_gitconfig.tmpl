@@ -6,7 +6,16 @@
 	helper = !/opt/homebrew/bin/gh auth git-credential
 [user]
 	name = Kyrylo Danylov
-	email = {{.email}}
+	email = {{.work_email}}
+
+# Alternative user configurations for different contexts
+# Include conditional configs based on directory
+#[includeIf "gitdir:~/personal/"]
+# 	path = ~/.gitconfig-work
+#	[user]
+#		name = Kyrylo Danylov
+#		email = {{.personal_email | default .work_email}}
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f

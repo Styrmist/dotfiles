@@ -1,0 +1,9 @@
+# Homebrew configuration (managed by chezmoi)
+# This section is automatically managed - do not edit manually
+# Add Homebrew to PATH
+if [[ $(uname -m) == "arm64" ]]; then
+    eval "$(/opt/homebrew/bin/brew shellensv)"
+elif [[ $(uname -m) == "x86_64" ]]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+fi
+# End of chezmoi-managed section 
