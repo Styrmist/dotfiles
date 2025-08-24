@@ -7,3 +7,7 @@ Email - use email for default git
 Add `cat .ssh/id_ed25519.pub` to github
 
 `sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply git@github.com:$GITHUB_USERNAME/dotfiles.git`
+
+OR 
+
+`curl -fsSL https://raw.githubusercontent.com/Styrmist/dotfiles/master/setup.sh | bash`
